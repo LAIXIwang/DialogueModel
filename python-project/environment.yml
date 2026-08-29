@@ -1,0 +1,12 @@
+# 使用已有的 conda work 环境（无则创建）：
+#   conda env create -f environment.yml
+#   conda activate work
+name: work
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.12
+  - pip
+  - pip:
+      - -r requirements.txt

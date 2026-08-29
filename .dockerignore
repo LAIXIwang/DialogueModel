@@ -1,0 +1,13 @@
+# Docker 构建上下文排除
+.git
+.vscode
+.idea
+**/node_modules
+**/dist
+**/.npm-cache
+**/__pycache__
+**/*.pyc
+**/.pytest_cache
+**/.env
+.env.docker
+*.log

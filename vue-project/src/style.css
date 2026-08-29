@@ -1,0 +1,246 @@
+/* 全局基础样式 —— 黑色主题 */
+:root {
+  color-scheme: dark;
+
+  --bg: #0a0a0b;
+  --bg-soft: #0e0e11;
+  --panel: #131317;
+  --panel-2: #1a1a1f;
+  --border: #232329;
+  --border-soft: #1b1b20;
+  --text: #ececef;
+  --text-2: #a2a2ab;
+  --text-3: #67676f;
+  --accent: #8e8e98;
+  --accent-soft: rgba(142, 142, 152, 0.16);
+  --danger: #ff5c5c;
+  --ok: #34d399;
+
+  --radius: 10px;
+  --radius-sm: 8px;
+  --sidebar-w: 264px;
+  --max-chat-w: 820px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+#app {
+  height: 100%;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+}
+
+input,
+textarea {
+  font-family: inherit;
+  color: inherit;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2a2a31;
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3a3a42;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* 消息内的 Markdown 渲染样式 */
+.md {
+  word-break: break-word;
+}
+
+.md > *:first-child {
+  margin-top: 0;
+}
+
+.md > *:last-child {
+  margin-bottom: 0;
+}
+
+.md p {
+  margin: 0.6em 0;
+}
+
+.md h1,
+.md h2,
+.md h3,
+.md h4 {
+  margin: 1em 0 0.5em;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.md ul,
+.md ol {
+  margin: 0.5em 0;
+  padding-left: 1.4em;
+}
+
+.md li {
+  margin: 0.25em 0;
+}
+
+.md blockquote {
+  margin: 0.6em 0;
+  padding: 0.2em 0.9em;
+  border-left: 3px solid var(--border);
+  color: var(--text-2);
+}
+
+.md code {
+  background: #23232a;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 0.12em 0.4em;
+  font-size: 0.88em;
+  font-family: 'SF Mono', 'JetBrains Mono', Consolas, 'Courier New', monospace;
+}
+
+.md pre {
+  background: #101014;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  overflow-x: auto;
+  margin: 0.8em 0;
+}
+
+.md pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.86em;
+  line-height: 1.55;
+}
+
+.md a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.md a:hover {
+  text-decoration: underline;
+}
+
+.md table {
+  border-collapse: collapse;
+  margin: 0.8em 0;
+  font-size: 0.92em;
+}
+
+.md th,
+.md td {
+  border: 1px solid var(--border);
+  padding: 6px 10px;
+}
+
+.md th {
+  background: var(--panel);
+}
+
+.md hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 1em 0;
+}
+
+/* ============ 管理后台：Element Plus 黑主题（与对话平台一致） ============ */
+html.dark {
+  --el-color-primary: #1e40af;
+  --el-color-primary-light-3: #2a55cc;
+  --el-color-primary-light-5: #4a6ed4;
+  --el-color-primary-light-7: rgba(74, 110, 212, 0.35);
+  --el-color-primary-light-8: rgba(74, 110, 212, 0.22);
+  --el-color-primary-light-9: rgba(74, 110, 212, 0.12);
+  --el-color-primary-dark-2: #182f87;
+
+  --el-bg-color: #0e0e11;
+  --el-bg-color-overlay: #141418;
+  --el-bg-color-page: #0a0a0b;
+  --el-fill-color-blank: #131317;
+
+  --el-border-color: #232329;
+  --el-border-color-light: #1b1b20;
+  --el-border-color-lighter: #1b1b20;
+  --el-border-color-extra-light: #1b1b20;
+  --el-border-color-dark: #33333c;
+
+  --el-text-color-primary: #ececef;
+  --el-text-color-regular: #c8c8d0;
+  --el-text-color-secondary: #a2a2ab;
+  --el-text-color-placeholder: #67676f;
+
+  --el-fill-color: #1a1a1f;
+  --el-fill-color-light: #1a1a1f;
+  --el-fill-color-lighter: #17171c;
+
+  --el-mask-color: rgba(0, 0, 0, 0.65);
+}
+
+/* 管理后台公共布局 */
+.admin-page {
+  padding: 18px 20px;
+}
+
+.admin-page .page-title {
+  margin: 0 0 16px;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--el-text-color-primary);
+}
+
+.admin-page .toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 14px;
+  align-items: center;
+}
+
+.admin-page .toolbar .spacer {
+  flex: 1;
+}
+
+.admin-pager {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 14px;
+}
