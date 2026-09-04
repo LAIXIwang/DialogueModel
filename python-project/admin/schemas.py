@@ -39,6 +39,21 @@ class RefreshRequest(BaseModel):
     refresh_token: str
 
 
+# ------------------------------ 找回密码（邮箱验证码） ------------------------------
+class ResetRequest(BaseModel):
+    username: str = Field(min_length=2, max_length=64)
+
+
+class ResetVerify(BaseModel):
+    username: str = Field(min_length=2, max_length=64)
+    code: str = Field(min_length=4, max_length=8)
+
+
+class ResetConfirm(BaseModel):
+    reset_token: str = Field(min_length=16)
+    new_password: str = Field(min_length=8, max_length=128)
+
+
 class UserBrief(BaseModel):
     id: int
     username: str

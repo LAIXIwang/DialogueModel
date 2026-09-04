@@ -40,7 +40,7 @@ def reset_password(db: Session, operator: User, target: User, new_password: str)
     if target.role.code == "super_admin" and operator.role.code != "super_admin":
         raise BizError("无权操作超级管理员", status_code=403, code=4030)
     UserDao.update_password(db, target, hash_password(new_password))
-    redis_client.ban_user(target.id, get_admin_settings().refresh_token_expire_days * 86400)
+    # 密码版本已 +1：该用户旧令牌全部失效
     redis_client.delete_session_cache(target.id)
 
 

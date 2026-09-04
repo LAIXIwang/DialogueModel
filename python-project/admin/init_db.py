@@ -80,8 +80,22 @@ def create_database_if_not_exists() -> None:
         conn.close()
 
 
+def _migrate_columns() -> None:
+    """为已有数据库补充新增列（幂等）。"""
+    from sqlalchemy import inspect, text
+
+    insp = inspect(engine)
+    if "user" in insp.get_table_names():
+        cols = [c["name"] for c in insp.get_columns("user")]
+        if "pwd_version" not in cols:
+            with engine.begin() as conn:
+                conn.execute(text("ALTER TABLE `user` ADD COLUMN pwd_version INT NOT NULL DEFAULT 0"))
+            print("[init_db] 已为 user 表新增 pwd_version 列")
+
+
 def ensure_seeded(db) -> None:
     """幂等种子：角色 → 权限 → 角色-权限 → 管理员 → 配额。"""
+    _migrate_columns()
     s = get_admin_settings()
 
     roles = {}

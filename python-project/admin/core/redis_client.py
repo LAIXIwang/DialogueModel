@@ -98,3 +98,66 @@ def get_rate_limit_config() -> int:
 
 def set_rate_limit_config(per_minute: int) -> None:
     get_redis().set("config:rate_limit", per_minute)
+
+
+# ------------------------------ 找回密码：邮箱验证码 ------------------------------
+CODE_TTL = 600          # 验证码 10 分钟有效
+CODE_MAX_ATTEMPTS = 5   # 最多输错 5 次
+SEND_WINDOW = 900       # 发送限流窗口 15 分钟
+SEND_MAX = 5            # 窗口内最多发送 5 次
+RESET_TOKEN_TTL = 600   # 重置令牌 10 分钟有效（一次性）
+
+
+def set_reset_code(user_id: int, code: str) -> None:
+    r = get_redis()
+    r.setex(f"reset:code:{user_id}", CODE_TTL, code)
+    r.delete(f"reset:attempts:{user_id}")
+
+
+def check_reset_code(user_id: int, code: str) -> bool:
+    """校验验证码；输错计数，超过上限即作废。"""
+    r = get_redis()
+    stored = r.get(f"reset:code:{user_id}")
+    if stored is None:
+        return False
+    if stored != code:
+        attempts = r.incr(f"reset:attempts:{user_id}")
+        r.expire(f"reset:attempts:{user_id}", CODE_TTL)
+        if attempts >= CODE_MAX_ATTEMPTS:
+            r.delete(f"reset:code:{user_id}")
+        return False
+    return True
+
+
+def clear_reset_code(user_id: int) -> None:
+    r = get_redis()
+    r.delete(f"reset:code:{user_id}", f"reset:attempts:{user_id}")
+
+
+def send_rate_ok(user_id: int) -> bool:
+    """发送限流：15 分钟内最多 5 次。"""
+    r = get_redis()
+    key = f"reset:send:{user_id}:{int(time.time() // SEND_WINDOW)}"
+    n = r.incr(key)
+    if n == 1:
+        r.expire(key, SEND_WINDOW * 2)
+    return n <= SEND_MAX
+
+
+def issue_reset_token(user_id: int) -> str:
+    import uuid
+
+    token = uuid.uuid4().hex
+    get_redis().setex(f"reset:token:{token}", RESET_TOKEN_TTL, str(user_id))
+    return token
+
+
+def consume_reset_token(token: str) -> int | None:
+    """一次性重置令牌：取出即作废。"""
+    r = get_redis()
+    key = f"reset:token:{token}"
+    uid = r.get(key)
+    if uid is None:
+        return None
+    r.delete(key)
+    return int(uid)

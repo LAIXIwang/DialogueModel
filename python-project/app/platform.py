@@ -65,6 +65,9 @@ async def platform_auth(token: str) -> User | None:
         raise HTTPException(401, "用户不存在")
     if user.status != 1:
         raise HTTPException(403, "账号已被禁用")
+    # 密码版本校验：改密/重置后旧令牌立即失效
+    if int(payload.get("pwdv", 0)) != (user.pwd_version or 0):
+        raise HTTPException(401, "令牌已失效，请重新登录")
     return user
 
 

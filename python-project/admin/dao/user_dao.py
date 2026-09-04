@@ -76,6 +76,8 @@ class UserDao:
     @staticmethod
     def update_password(db: Session, user: User, password_hash: str) -> None:
         user.password_hash = password_hash
+        # 密码版本 +1：所有已签发令牌因版本不符立即失效
+        user.pwd_version = (user.pwd_version or 0) + 1
         db.commit()
 
     @staticmethod

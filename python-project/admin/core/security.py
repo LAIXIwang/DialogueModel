@@ -22,7 +22,7 @@ def verify_password(plain: str, hashed: str) -> bool:
 
 
 # ------------------------------ JWT ------------------------------
-def _create_token(user_id: int, username: str, role_code: str, token_type: str, expires_delta: timedelta) -> tuple[str, str]:
+def _create_token(user_id: int, username: str, role_code: str, token_type: str, expires_delta: timedelta, pwd_version: int = 0) -> tuple[str, str]:
     settings = get_admin_settings()
     now = datetime.now(timezone.utc)
     jti = uuid.uuid4().hex
@@ -32,6 +32,7 @@ def _create_token(user_id: int, username: str, role_code: str, token_type: str, 
         "role": role_code,
         "type": token_type,  # access | refresh
         "jti": jti,
+        "pwdv": pwd_version,  # 密码版本：改密后旧令牌即失效
         "iat": now,
         "exp": now + expires_delta,
     }
@@ -39,19 +40,19 @@ def _create_token(user_id: int, username: str, role_code: str, token_type: str, 
     return token, jti
 
 
-def create_access_token(user_id: int, username: str, role_code: str) -> tuple[str, str]:
+def create_access_token(user_id: int, username: str, role_code: str, pwd_version: int = 0) -> tuple[str, str]:
     settings = get_admin_settings()
     return _create_token(
         user_id, username, role_code, "access",
-        timedelta(minutes=settings.access_token_expire_minutes),
+        timedelta(minutes=settings.access_token_expire_minutes), pwd_version,
     )
 
 
-def create_refresh_token(user_id: int, username: str, role_code: str) -> tuple[str, str]:
+def create_refresh_token(user_id: int, username: str, role_code: str, pwd_version: int = 0) -> tuple[str, str]:
     settings = get_admin_settings()
     return _create_token(
         user_id, username, role_code, "refresh",
-        timedelta(days=settings.refresh_token_expire_days),
+        timedelta(days=settings.refresh_token_expire_days), pwd_version,
     )
 
 

@@ -64,6 +64,7 @@ async function onSubmit() {
       </el-form>
 
       <router-link class="back-link" to="/">← 返回对话平台</router-link>
+      <router-link class="forgot-link" to="/reset-password">忘记密码？</router-link>
     </div>
   </div>
 </template>
@@ -136,6 +137,20 @@ async function onSubmit() {
 }
 
 .back-link:hover {
+  color: #ececef;
+}
+
+.forgot-link {
+  display: block;
+  margin-top: 8px;
+  text-align: center;
+  font-size: 12.5px;
+  color: #67676f;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.forgot-link:hover {
   color: #ececef;
 }
 </style>

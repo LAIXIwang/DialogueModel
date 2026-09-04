@@ -52,6 +52,9 @@ def get_current_user(
         raise BizError("用户不存在", status_code=401, code=4015)
     if user.status != 1:
         raise BizError("账号已被禁用", status_code=403, code=4031)
+    # 密码版本校验：改密/重置后旧令牌立即失效
+    if int(payload.get("pwdv", 0)) != (user.pwd_version or 0):
+        raise BizError("令牌已失效，请重新登录", status_code=401, code=4016)
 
     # 供审计与限流复用
     request.state.token_payload = payload

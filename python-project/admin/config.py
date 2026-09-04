@@ -43,6 +43,15 @@ class AdminSettings(BaseSettings):
     upstream_protocol: str = "openai"
     upstream_model: str = "dialogue-model"
 
+    # ---- 邮件（找回密码验证码）----
+    smtp_host: str = ""
+    smtp_port: int = 465
+    smtp_user: str = ""
+    smtp_password: str = ""
+    smtp_from: str = ""
+    smtp_ssl: bool = True  # 465 端口用 SSL；587 端口设 False 并开启 STARTTLS
+    smtp_starttls: bool = False
+
     # ---- CORS ----
     cors_origins: str = "http://localhost:5173,http://127.0.0.1:5173"
 

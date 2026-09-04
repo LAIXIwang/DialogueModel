@@ -19,6 +19,7 @@ class User(Base):
     avatar: Mapped[str] = mapped_column(String(512), default="", nullable=False)  # 对象存储 URL
     role_id: Mapped[int] = mapped_column(ForeignKey("role.id"), nullable=False, index=True)
     status: Mapped[int] = mapped_column(Integer, default=1, nullable=False)  # 1 启用 / 0 禁用
+    pwd_version: Mapped[int] = mapped_column(Integer, default=0, nullable=False)  # 密码版本：改密后 +1，旧令牌全部失效
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now, nullable=False)
     last_login_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
 

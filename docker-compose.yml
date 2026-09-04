@@ -56,6 +56,13 @@ services:
       UPSTREAM_API_KEY: ${UPSTREAM_API_KEY:-}
       UPSTREAM_PROTOCOL: ${UPSTREAM_PROTOCOL:-openai}
       UPSTREAM_MODEL: ${UPSTREAM_MODEL:-deepseek-chat}
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-465}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      SMTP_FROM: ${SMTP_FROM:-}
+      SMTP_SSL: ${SMTP_SSL:-true}
+      SMTP_STARTTLS: ${SMTP_STARTTLS:-false}
     depends_on:
       mysql:
         condition: service_healthy

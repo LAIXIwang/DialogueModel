@@ -12,6 +12,9 @@ from ..schemas import (
     LoginRequest,
     RefreshRequest,
     RegisterRequest,
+    ResetConfirm,
+    ResetRequest,
+    ResetVerify,
     UserBrief,
 )
 from ..services import auth_service
@@ -32,6 +35,24 @@ def register(req: RegisterRequest, request: Request, db: Session = Depends(get_d
 @router.post("/refresh")
 def refresh(req: RefreshRequest, request: Request, db: Session = Depends(get_db)):
     return ok(auth_service.refresh(db, req.refresh_token, client_ip(request)))
+
+
+# ------------------------------ 找回密码（邮箱验证码） ------------------------------
+@router.post("/reset/request")
+def reset_request(req: ResetRequest, request: Request, db: Session = Depends(get_db)):
+    data = auth_service.request_reset(db, req.username, client_ip(request))
+    return ok(data, message="如果该账号已绑定邮箱，验证码已发送")
+
+
+@router.post("/reset/verify")
+def reset_verify(req: ResetVerify, request: Request, db: Session = Depends(get_db)):
+    return ok(auth_service.verify_reset(db, req.username, req.code, client_ip(request)))
+
+
+@router.post("/reset/confirm")
+def reset_confirm(req: ResetConfirm, request: Request, db: Session = Depends(get_db)):
+    auth_service.confirm_reset(db, req.reset_token, req.new_password, client_ip(request))
+    return ok(message="密码已重置，请使用新密码登录")
 
 
 @router.post("/logout")
