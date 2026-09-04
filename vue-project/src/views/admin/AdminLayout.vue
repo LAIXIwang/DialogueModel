@@ -116,8 +116,10 @@ async function onLogout() {
   flex: none;
   display: flex;
   flex-direction: column;
-  background: var(--bg-soft, #0e0e11);
-  border-right: 1px solid var(--border, #2b2b34);
+  background: rgba(14, 14, 17, 0.62);
+  backdrop-filter: blur(22px) saturate(1.4);
+  -webkit-backdrop-filter: blur(22px) saturate(1.4);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .admin-brand {
@@ -202,8 +204,11 @@ async function onLogout() {
   align-items: center;
   gap: 12px;
   padding: 0 20px;
-  border-bottom: 1px solid var(--border, #2b2b34);
-  background: var(--bg-soft, #0e0e11);
+  /* 毛玻璃 */
+  background: rgba(14, 14, 17, 0.55);
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .page-name {

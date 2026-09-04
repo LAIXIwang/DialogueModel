@@ -194,10 +194,10 @@ html.dark {
   --el-color-primary-light-9: rgba(74, 110, 212, 0.12);
   --el-color-primary-dark-2: #182f87;
 
-  --el-bg-color: #0e0e11;
-  --el-bg-color-overlay: #141418;
+  --el-bg-color: rgba(19, 19, 23, 0.5);
+  --el-bg-color-overlay: rgba(22, 22, 28, 0.7);
   --el-bg-color-page: #0a0a0b;
-  --el-fill-color-blank: #131317;
+  --el-fill-color-blank: rgba(19, 19, 23, 0.35);
 
   --el-border-color: #2e2e38;
   --el-border-color-light: #26262f;
@@ -210,11 +210,62 @@ html.dark {
   --el-text-color-secondary: #a2a2ab;
   --el-text-color-placeholder: #67676f;
 
-  --el-fill-color: #1a1a1f;
-  --el-fill-color-light: #1a1a1f;
-  --el-fill-color-lighter: #17171c;
+  --el-fill-color: rgba(255, 255, 255, 0.04);
+  --el-fill-color-light: rgba(255, 255, 255, 0.05);
+  --el-fill-color-lighter: rgba(255, 255, 255, 0.03);
 
   --el-mask-color: rgba(0, 0, 0, 0.65);
+}
+
+/* ============ 全局毛玻璃：Element Plus 浮层/面板/输入 ============ */
+html.dark .el-dialog,
+html.dark .el-message-box,
+html.dark .el-popper {
+  background: rgba(22, 22, 28, 0.72);
+  backdrop-filter: blur(22px) saturate(1.4);
+  -webkit-backdrop-filter: blur(22px) saturate(1.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+html.dark .el-input__wrapper,
+html.dark .el-textarea__inner,
+html.dark .el-select__wrapper {
+  background-color: rgba(255, 255, 255, 0.045);
+  backdrop-filter: blur(10px) saturate(1.3);
+  -webkit-backdrop-filter: blur(10px) saturate(1.3);
+}
+
+html.dark .el-table {
+  background-color: transparent;
+}
+
+html.dark .el-table th.el-table__cell {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+html.dark .el-table tr {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+html.dark .el-table--striped .el-table__body tr.el-table__row--striped td.el-table__cell {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* 管理后台卡片/面板：毛玻璃 */
+.admin-page .panel,
+.admin-page .stat-card {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.065),
+    rgba(255, 255, 255, 0.015) 50%,
+    rgba(255, 255, 255, 0.04)
+  );
+  backdrop-filter: blur(16px) saturate(1.3);
+  -webkit-backdrop-filter: blur(16px) saturate(1.3);
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 8px 28px rgba(0, 0, 0, 0.35);
 }
 
 /* 管理后台公共布局 */

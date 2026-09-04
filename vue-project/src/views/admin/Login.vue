@@ -81,9 +81,11 @@ async function onSubmit() {
   width: 380px;
   max-width: calc(100vw - 40px);
   padding: 34px 32px 26px;
-  border: 1px solid var(--border, #232329);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 14px;
-  background: var(--bg-soft, #0e0e11);
+  background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02) 50%, rgba(255,255,255,0.05));
+  backdrop-filter: blur(24px) saturate(1.5);
+  -webkit-backdrop-filter: blur(24px) saturate(1.5);
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
 }
 
