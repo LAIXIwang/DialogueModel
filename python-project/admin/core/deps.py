@@ -79,3 +79,19 @@ def require_permission(perm_code: str):
         return user
 
     return checker
+
+
+def require_any_permission(*perm_codes: str):
+    """拥有任一权限即可访问（用于下拉选项等辅助接口，不给对应菜单权限也能用）。"""
+
+    def checker(request: Request, user: User = Depends(get_current_user), db=Depends(get_db)) -> User:
+        if user.role.code == "super_admin":
+            return user
+        from ..dao.rbac_dao import PermissionDao
+
+        perms = PermissionDao.codes_by_user(user)
+        if not (perms & set(perm_codes)):
+            raise BizError(f"无权限: {'/'.join(perm_codes)}", status_code=403, code=4030)
+        return user
+
+    return checker

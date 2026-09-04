@@ -59,7 +59,7 @@ def create_user(
     operator: User = Depends(require_permission("user:create")),
     db: Session = Depends(get_db),
 ):
-    user = user_service.create_user(db, req.username, req.password, req.role_id, req.phone, req.email)
+    user = user_service.create_user(db, operator, req.username, req.password, req.role_id, req.phone, req.email)
     record_log(db, "user.create", ip=client_ip(request), user_id=operator.id, username=operator.username,
                params={"target": req.username, "role_id": req.role_id})
     return ok(_to_out(user), message="创建成功")
@@ -89,6 +89,7 @@ def update_user(
     target = UserDao.get_by_id(db, user_id)
     if target is None:
         raise BizError("用户不存在", status_code=404, code=4040)
+    user_service.ensure_can_manage(operator, target)
     UserDao.update_profile(db, target, phone=req.phone, email=req.email, avatar=req.avatar)
     record_log(db, "user.edit", ip=client_ip(request), user_id=operator.id, username=operator.username,
                params={"target": target.username})

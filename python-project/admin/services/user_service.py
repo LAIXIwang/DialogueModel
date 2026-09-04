@@ -11,22 +11,38 @@ from ..dao.rbac_dao import RoleDao
 from ..dao.user_dao import UserDao
 from ..models import User
 
+# 管理员可管理的角色范围：普通用户 + 访客
+ADMIN_MANAGEABLE_ROLES = ("user", "guest")
 
-def create_user(db: Session, username: str, password: str, role_id: int, phone: str, email: str) -> User:
+
+def ensure_can_manage(operator: User, target: User) -> None:
+    """管理范围校验：
+    超级管理员可管理所有角色；管理员仅能管理普通用户与访客（不能动超级管理员/其他管理员）。
+    """
+    if operator.role.code == "super_admin":
+        return
+    if target.role.code not in ADMIN_MANAGEABLE_ROLES:
+        raise BizError("管理员仅能管理普通用户与访客账号", status_code=403, code=4030)
+
+
+def create_user(db: Session, operator: User, username: str, password: str, role_id: int, phone: str, email: str) -> User:
     if UserDao.get_by_username(db, username) is not None:
         raise BizError("用户名已存在", code=4001)
-    if RoleDao.get_by_id(db, role_id) is None:
+    role = RoleDao.get_by_id(db, role_id)
+    if role is None:
         raise BizError("角色不存在", code=4003)
+    # 管理员新建用户时只能授予普通用户/访客角色
+    if operator.role.code != "super_admin" and role.code not in ADMIN_MANAGEABLE_ROLES:
+        raise BizError("管理员仅能为新用户分配普通用户或访客角色", status_code=403, code=4030)
     user = UserDao.create(db, username, hash_password(password), role_id, phone, email)
     QuotaDao.get_or_create(db, user.id, get_admin_settings().default_daily_quota)
     return user
 
 
 def set_status(db: Session, operator: User, target: User, status: int) -> None:
+    ensure_can_manage(operator, target)
     if target.id == operator.id and status == 0:
         raise BizError("不能禁用自己", code=4004)
-    if target.role.code == "super_admin" and operator.role.code != "super_admin":
-        raise BizError("无权操作超级管理员", status_code=403, code=4030)
     UserDao.update_status(db, target, status)
     if status == 0:
         # 禁用 = 入黑名单：封禁其在线令牌
@@ -37,16 +53,14 @@ def set_status(db: Session, operator: User, target: User, status: int) -> None:
 
 
 def reset_password(db: Session, operator: User, target: User, new_password: str) -> None:
-    if target.role.code == "super_admin" and operator.role.code != "super_admin":
-        raise BizError("无权操作超级管理员", status_code=403, code=4030)
+    ensure_can_manage(operator, target)
     UserDao.update_password(db, target, hash_password(new_password))
     # 密码版本已 +1：该用户旧令牌全部失效
     redis_client.delete_session_cache(target.id)
 
 
 def assign_role(db: Session, operator: User, target: User, role_id: int) -> None:
-    if target.role.code == "super_admin" and operator.role.code != "super_admin":
-        raise BizError("无权操作超级管理员", status_code=403, code=4030)
+    ensure_can_manage(operator, target)
     if RoleDao.get_by_id(db, role_id) is None:
         raise BizError("角色不存在", code=4003)
     UserDao.assign_role(db, target, role_id)
@@ -58,6 +72,7 @@ def delete_user(db: Session, operator: User, target: User) -> None:
         raise BizError("超级管理员不可删除", code=4005)
     if target.id == operator.id:
         raise BizError("不能删除自己", code=4006)
+    ensure_can_manage(operator, target)
     db.delete(target)
     db.commit()
     redis_client.delete_session_cache(target.id)

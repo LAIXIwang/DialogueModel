@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm import Session
 
 from ..core.audit import record_log
-from ..core.deps import client_ip, require_permission
+from ..core.deps import client_ip, require_any_permission, require_permission
 from ..core.exceptions import BizError, ok
 from ..database import get_db
 from ..dao.rbac_dao import PermissionDao, RoleDao
@@ -28,7 +28,11 @@ def _to_out(role: Role, db: Session) -> dict:
 
 
 @router.get("")
-def list_roles(_: User = Depends(require_permission("role:list")), db: Session = Depends(get_db)):
+def list_roles(
+    _: User = Depends(require_any_permission("role:list", "user:create", "user:assign_role")),
+    db: Session = Depends(get_db),
+):
+    """角色列表：角色管理页使用；管理员创建用户/分配角色时也需要（无角色菜单权限）。"""
     return ok([_to_out(r, db) for r in RoleDao.list_all(db)])
 
 

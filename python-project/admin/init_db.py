@@ -52,9 +52,17 @@ SEED_PERMISSIONS = [
 ]
 
 # 角色 → 权限编码
+# 管理员：仅 用户管理 + 分组管理 + 会话管理（权限查询仅用于下拉选择）
 ROLE_PERMS = {
     "super_admin": [c for c, _, _ in SEED_PERMISSIONS],
-    "admin": [c for c, _, _ in SEED_PERMISSIONS if c not in ("user:delete", "role:delete")],
+    "admin": [
+        "user:list", "user:create", "user:edit", "user:delete",
+        "user:status", "user:reset_password", "user:assign_role",
+        "group:list", "group:create", "group:edit", "group:delete",
+        "group:assign_member", "group:assign_permission",
+        "conversation:list", "conversation:delete",
+        "permission:list",
+    ],
     "user": ["conversation:list", "conversation:delete"],
     "guest": [],
 }
