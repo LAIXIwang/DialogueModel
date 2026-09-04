@@ -55,7 +55,7 @@ npm run dev
 前置：已安装 Docker 与 Docker Compose。
 
 ```bash
-git clone <你的仓库地址> dialogue && cd dialogue
+git clone https://github.com/LAIXIwang/DialogueModel dialogue && cd dialogue
 ./deploy.sh          # 一行命令完成构建与启动（等价于 docker compose --env-file .env.docker up -d --build）
 ```
 
