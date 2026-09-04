@@ -996,8 +996,7 @@ onMounted(async () => {
 .composer {
   flex: none;
   padding: 14px 18px 18px;
-  /* 与消息区的清晰边界 */
-  border-top: 1px solid var(--border);
+  /* 与消息区自然过渡（无分隔线） */
   background: linear-gradient(to top, var(--bg) 65%, rgba(10, 10, 11, 0));
 }
 
