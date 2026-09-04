@@ -47,6 +47,7 @@ npm run dev
 | --- | --- | --- |
 | 对话平台 | http://localhost:5173 | 需先登录（`/chat-login`，账号与管理平台互通） |
 | 管理后台（独立入口） | http://localhost:5173/login | admin / Admin@123456 |
+| 找回密码 | http://localhost:5173/reset-password | 邮箱验证码重置（需配置 SMTP） |
 
 详细文档：[对话 BFF](python-project/README.md) · [管理平台](python-project/admin/README.md) · [前端](vue-project/README.md)
 
@@ -65,6 +66,7 @@ git clone https://github.com/LAIXIwang/DialogueModel dialogue && cd dialogue
 | --- | --- | --- |
 | 对话平台 | `http://<服务器IP>/` | 登录页 `/chat-login` |
 | 管理后台 | `http://<服务器IP>/login` | 默认管理员 admin / Admin@123456 |
+| 找回密码 | `http://<服务器IP>/reset-password` | 邮箱验证码重置（`.env.docker` 配置 SMTP_*） |
 
 架构（5 个容器）：`web`(nginx 静态+反代) → `bff`(:8000) / `admin`(:8001) → `mysql`(DialogueModel) + `redis`(黑名单/限流/会话缓存)。
 管理平台启动时自动建表+种子；模型接入密钥通过 `.env.docker` 的 `UPSTREAM_API_KEY` 注入（或部署后在后台「模型接入」在线修改）。

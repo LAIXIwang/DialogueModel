@@ -93,6 +93,7 @@ admin/
 | 模块 | 接口 |
 | --- | --- |
 | 认证 | `POST /api/auth/login` `register` `refresh` `logout` `change-password`；`GET /api/auth/me` |
+| 找回密码 | `POST /api/auth/reset/request`（发验证码）`reset/verify`（校验）`reset/confirm`（重置）；页面 `/reset-password` |
 | 用户 | `GET/POST /api/users`，`PUT /api/users/{id}`，`POST /{id}/status` `/{id}/reset-password`，`PUT /{id}/role`，`DELETE /{id}`，`PUT /api/users/me` |
 | 角色 | `GET/POST /api/roles`，`PUT/DELETE /api/roles/{id}`，`GET/PUT /api/roles/{id}/permissions` |
 | 分组 | `GET/POST /api/groups`，`PUT/DELETE /api/groups/{id}`，`GET/PUT /api/groups/{id}/members`，`GET/PUT /api/groups/{id}/permissions` |
