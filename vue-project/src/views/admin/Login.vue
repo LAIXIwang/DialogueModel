@@ -62,6 +62,8 @@ async function onSubmit() {
           登 录
         </el-button>
       </el-form>
+
+      <router-link class="back-link" to="/">← 返回对话平台</router-link>
     </div>
   </div>
 </template>
@@ -119,5 +121,19 @@ async function onSubmit() {
 .login-btn {
   width: 100%;
   margin-top: 6px;
+}
+
+.back-link {
+  display: block;
+  margin-top: 18px;
+  text-align: center;
+  font-size: 13px;
+  color: #8e8e98;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.back-link:hover {
+  color: #ececef;
 }
 </style>
