@@ -62,8 +62,6 @@ async function onSubmit() {
           登 录
         </el-button>
       </el-form>
-
-      <p class="login-hint">默认管理员：admin / Admin@123456（请登录后尽快修改）</p>
     </div>
   </div>
 </template>
@@ -121,12 +119,5 @@ async function onSubmit() {
 .login-btn {
   width: 100%;
   margin-top: 6px;
-}
-
-.login-hint {
-  margin: 18px 0 0;
-  text-align: center;
-  font-size: 12px;
-  color: #67676f;
 }
 </style>
