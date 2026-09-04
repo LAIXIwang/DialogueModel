@@ -6,8 +6,10 @@
   --bg-soft: #0e0e11;
   --panel: #131317;
   --panel-2: #1a1a1f;
-  --border: #232329;
-  --border-soft: #1b1b20;
+  /* 边界描边：更清晰的分隔 */
+  --border: #2b2b34;
+  --border-soft: #202029;
+  --border-glow: rgba(255, 255, 255, 0.14);
   --text: #ececef;
   --text-2: #a2a2ab;
   --text-3: #67676f;
@@ -197,11 +199,11 @@ html.dark {
   --el-bg-color-page: #0a0a0b;
   --el-fill-color-blank: #131317;
 
-  --el-border-color: #232329;
-  --el-border-color-light: #1b1b20;
-  --el-border-color-lighter: #1b1b20;
-  --el-border-color-extra-light: #1b1b20;
-  --el-border-color-dark: #33333c;
+  --el-border-color: #2e2e38;
+  --el-border-color-light: #26262f;
+  --el-border-color-lighter: #22222b;
+  --el-border-color-extra-light: #1f1f28;
+  --el-border-color-dark: #3c3c47;
 
   --el-text-color-primary: #ececef;
   --el-text-color-regular: #c8c8d0;

@@ -117,7 +117,7 @@ async function onLogout() {
   display: flex;
   flex-direction: column;
   background: var(--bg-soft, #0e0e11);
-  border-right: 1px solid var(--border-soft, #1b1b20);
+  border-right: 1px solid var(--border, #2b2b34);
 }
 
 .admin-brand {
@@ -180,7 +180,7 @@ async function onLogout() {
 
 .admin-aside-foot {
   padding: 12px;
-  border-top: 1px solid var(--border-soft, #1b1b20);
+  border-top: 1px solid var(--border, #2b2b34);
 }
 
 .back-chat {
@@ -202,7 +202,7 @@ async function onLogout() {
   align-items: center;
   gap: 12px;
   padding: 0 20px;
-  border-bottom: 1px solid var(--border-soft, #1b1b20);
+  border-bottom: 1px solid var(--border, #2b2b34);
   background: var(--bg-soft, #0e0e11);
 }
 

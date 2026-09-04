@@ -546,7 +546,7 @@ onMounted(async () => {
   display: flex;
   flex-direction: column;
   background: var(--bg-soft);
-  border-right: 1px solid var(--border-soft);
+  border-right: 1px solid var(--border);
   transition: margin 0.25s ease;
 }
 
@@ -651,7 +651,7 @@ onMounted(async () => {
 
 .sidebar-foot {
   padding: 12px;
-  border-top: 1px solid var(--border-soft);
+  border-top: 1px solid var(--border);
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -765,7 +765,7 @@ onMounted(async () => {
   align-items: center;
   gap: 12px;
   padding: 0 18px;
-  border-bottom: 1px solid var(--border-soft);
+  border-bottom: 1px solid var(--border);
 }
 
 .icon-btn {
@@ -995,21 +995,49 @@ onMounted(async () => {
 /* ------------------------------ 输入区 ------------------------------ */
 .composer {
   flex: none;
-  padding: 8px 18px 16px;
+  padding: 14px 18px 18px;
+  /* 与消息区的清晰边界 */
+  border-top: 1px solid var(--border);
+  background: linear-gradient(to top, var(--bg) 65%, rgba(10, 10, 11, 0));
 }
 
 .composer-box {
   max-width: var(--max-chat-w);
   margin: 0 auto;
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  background: var(--panel);
-  padding: 10px 12px 8px;
-  transition: border-color 0.15s;
+  border-radius: 16px;
+  padding: 12px 14px 10px;
+  /* ---- 液态玻璃质感 ---- */
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.09),
+    rgba(255, 255, 255, 0.03) 42%,
+    rgba(255, 255, 255, 0.06)
+  );
+  backdrop-filter: blur(20px) saturate(1.5);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  border: 1px solid var(--border-glow);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 0 24px rgba(255, 255, 255, 0.02),
+    0 10px 36px rgba(0, 0, 0, 0.45);
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s,
+    background 0.2s;
 }
 
 .composer-box:focus-within {
-  border-color: #3a3a45;
+  border-color: rgba(255, 255, 255, 0.3);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.12),
+    rgba(255, 255, 255, 0.04) 42%,
+    rgba(255, 255, 255, 0.08)
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 0 0 3px rgba(255, 255, 255, 0.05),
+    0 12px 44px rgba(0, 0, 0, 0.5);
 }
 
 .composer textarea {
