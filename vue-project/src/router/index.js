@@ -80,6 +80,11 @@ const router = createRouter({
         },
       ],
     },
+    // 兜底：未知路径重定向到对话平台，避免旧镜像下出现黑屏
+    {
+      path: '/:pathMatch(.*)*',
+      redirect: '/',
+    },
   ],
 })
 
