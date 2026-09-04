@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import {
@@ -44,6 +44,11 @@ async function onLogout() {
   ElMessage.success('已退出登录')
   router.push('/login')
 }
+
+// 每次进入后台都从服务端刷新用户权限，菜单实时跟随（不受本地缓存影响）
+onMounted(() => {
+  auth.fetchMe().catch(() => {})
+})
 </script>
 
 <template>

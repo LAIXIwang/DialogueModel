@@ -174,6 +174,12 @@ function fmtTime(v) {
   return v ? String(v).replace('T', ' ').slice(0, 19) : '—'
 }
 
+/** 管理范围：超管可管理所有角色；管理员仅能管理普通用户与访客（与后端一致） */
+function canManage(row) {
+  if (auth.user?.role_code === 'super_admin') return true
+  return ['user', 'guest'].includes(row.role_code)
+}
+
 onMounted(() => {
   load()
   loadRoles()
@@ -264,7 +270,7 @@ onMounted(() => {
         <template #default="{ row }">
           <el-switch
             :model-value="row.status === 1"
-            :disabled="!auth.hasPerm('user:status')"
+            :disabled="!auth.hasPerm('user:status') || !canManage(row)"
             @change="toggleStatus(row)"
           />
         </template>
@@ -274,14 +280,39 @@ onMounted(() => {
       </el-table-column>
       <el-table-column label="操作" width="300" fixed="right">
         <template #default="{ row }">
-          <el-button v-if="auth.hasPerm('user:edit')" link type="primary" @click="openEdit(row)">编辑</el-button>
-          <el-button v-if="auth.hasPerm('user:assign_role')" link type="primary" @click="openAssignRole(row)">
+          <el-button
+            v-if="auth.hasPerm('user:edit') && canManage(row)"
+            link
+            type="primary"
+            @click="openEdit(row)"
+          >
+            编辑
+          </el-button>
+          <el-button
+            v-if="auth.hasPerm('user:assign_role') && canManage(row)"
+            link
+            type="primary"
+            @click="openAssignRole(row)"
+          >
             分配角色
           </el-button>
-          <el-button v-if="auth.hasPerm('user:reset_password')" link type="warning" @click="onResetPassword(row)">
+          <el-button
+            v-if="auth.hasPerm('user:reset_password') && canManage(row)"
+            link
+            type="warning"
+            @click="onResetPassword(row)"
+          >
             重置密码
           </el-button>
-          <el-button v-if="auth.hasPerm('user:delete')" link type="danger" @click="onDelete(row)">删除</el-button>
+          <el-button
+            v-if="auth.hasPerm('user:delete') && canManage(row)"
+            link
+            type="danger"
+            @click="onDelete(row)"
+          >
+            删除
+          </el-button>
+          <span v-if="!canManage(row)" class="no-action">—</span>
         </template>
       </el-table-column>
     </el-table>
@@ -345,6 +376,11 @@ onMounted(() => {
 
 .no-group {
   color: var(--el-text-color-placeholder);
+}
+
+.no-action {
+  color: var(--el-text-color-placeholder);
+  font-size: 12px;
 }
 
 .grouping-bar {
