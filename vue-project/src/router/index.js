@@ -80,6 +80,12 @@ const router = createRouter({
         },
       ],
     },
+    {
+      path: '/403',
+      name: 'forbidden',
+      component: () => import('@/views/Forbidden.vue'),
+      meta: { title: '无权限', public: true },
+    },
     // 兜底：未知路径重定向到对话平台，避免旧镜像下出现黑屏
     {
       path: '/:pathMatch(.*)*',
@@ -87,6 +93,26 @@ const router = createRouter({
     },
   ],
 })
+
+// 管理后台菜单顺序与所需权限（用于登录后动态落地到第一个可用模块）
+const ADMIN_MENU_ORDER = [
+  '/admin/users',
+  '/admin/groups',
+  '/admin/roles',
+  '/admin/conversations',
+  '/admin/stats',
+  '/admin/model',
+  '/admin/logs',
+]
+const ADMIN_PERM_MAP = {
+  '/admin/users': 'user:list',
+  '/admin/groups': 'group:list',
+  '/admin/roles': 'role:list',
+  '/admin/conversations': 'conversation:list',
+  '/admin/stats': 'stats:read',
+  '/admin/model': 'model:read',
+  '/admin/logs': 'log:read',
+}
 
 // 全局路由守卫：对话平台与管理平台共用同一账号体系（同一 JWT）
 router.beforeEach((to) => {
@@ -104,6 +130,18 @@ router.beforeEach((to) => {
   }
   if (to.name === 'login' && auth.accessToken) {
     return { path: '/admin' }
+  }
+  // 管理后台：按角色权限动态落地，避免无权限页面 403 弹窗
+  if (to.path.startsWith('/admin')) {
+    const need = ADMIN_PERM_MAP[to.path]
+    if (need && !auth.hasPerm(need)) {
+      const first = ADMIN_MENU_ORDER.find((p) => auth.hasPerm(ADMIN_PERM_MAP[p]))
+      return first ? { path: first } : { path: '/403' }
+    }
+    if (to.path === '/admin') {
+      const first = ADMIN_MENU_ORDER.find((p) => auth.hasPerm(ADMIN_PERM_MAP[p]))
+      return first ? { path: first } : { path: '/403' }
+    }
   }
   document.title = (to.meta.title ? `${to.meta.title} · ` : '') + 'Dialogue'
   return true
